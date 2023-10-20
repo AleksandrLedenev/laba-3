@@ -16,22 +16,6 @@ public abstract class Personage {
         this.y = y;
     }
 
-    public int getX() {
-        return x;
-    }
-
-    public int getY() {
-        return y;
-    }
-
-    public int getLevel() {
-        return level;
-    }
-
-    public String getName() {
-        return name;
-    }
-
     public abstract List<Personage> chooseEnemiesToFight(List<Personage> enemies);
 
     @Override
