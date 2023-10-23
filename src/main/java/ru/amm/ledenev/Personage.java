@@ -1,5 +1,6 @@
 package ru.amm.ledenev;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
@@ -16,6 +17,22 @@ public abstract class Personage {
         this.y = y;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public int getLevel() {
+        return level;
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
     public abstract List<Personage> chooseEnemiesToFight(List<Personage> enemies);
 
     @Override
@@ -30,4 +47,9 @@ public abstract class Personage {
     public int hashCode() {
         return Objects.hash(name, level, x, y);
     }
+
+    public String toString(){
+        return name + " " + level + " " + x + " " + y;
+    }
+
 }
