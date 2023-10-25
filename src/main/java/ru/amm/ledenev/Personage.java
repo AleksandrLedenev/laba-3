@@ -6,11 +6,11 @@ import java.util.Objects;
 import static java.lang.Math.pow;
 import static java.lang.Math.sqrt;
 
-public abstract class Personage {
-    private String name;
-    private int level;
-    private int x;
-    private int y;
+public abstract class Personage implements Comparable<Personage> {
+    private final String name;
+    private final int level;
+    private final int x;
+    private final int y;
 
     public Personage(String name, int level, int x, int y) {
         this.name = name;
@@ -19,26 +19,15 @@ public abstract class Personage {
         this.y = y;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public int getLevel() {
-        return level;
-    }
-
-    public int getX() {
-        return x;
-    }
-
-    public int getY() {
-        return y;
-    }
-
     public abstract List<Personage> chooseEnemiesToFight(List<Personage> enemies);
 
     public double rangeTo(Personage personage){
-        return sqrt(pow(personage.getX() - getX(), 2) + pow(personage.getY() - getY(), 2));
+        return sqrt(pow(personage.x - x, 2) + pow(personage.y - y, 2));
+    }
+
+    @Override
+    public int compareTo(Personage anotherPersonage){
+        return Integer.compare(this.level, anotherPersonage.level);
     }
 
     @Override
@@ -56,7 +45,6 @@ public abstract class Personage {
 
     @Override
     public String toString(){
-        return name + " " + level + " " + x + " " + y;
+        return name + " " + level;// + " " + x + " " + y;
     }
-
 }

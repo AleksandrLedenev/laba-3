@@ -34,10 +34,12 @@ public class Main {
 
             team.add(personage);
         }
+
+        System.out.println("Моя команда: " + myTeam);
+        System.out.println("Вражеская команда: " + enemyTeam);
+
         Game game = new Game(myTeam, enemyTeam);
-        System.out.println(myTeam);
-        System.out.println(enemyTeam);
-        System.out.println(game.getAttackedEnemies());
+        System.out.println("Атакованные противники: " + game.getAttackedEnemies());
     }
 
 }
