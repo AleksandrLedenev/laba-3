@@ -12,30 +12,31 @@ public class Main {
         List<Personage> myTeam = new ArrayList<>();
         List<Personage> enemyTeam = new ArrayList<>();
         while (scanner.hasNext()){
-            Personage personage;
             String marker = scanner.next();
             String name = scanner.next();
             int level = scanner.nextInt();
             int x = scanner.nextInt();
             int y = scanner.nextInt();
-            switch (marker){
-                case "SA": personage = new Swordsman(name, level, x, y);
-                    myTeam.add(personage);
-                    break;
-                case "SE": personage = new Swordsman(name, level, x, y);
-                    enemyTeam.add(personage);
-                    break;
-                case "AA": personage = new Archer(name, level, x, y);
-                    myTeam.add(personage);
-                    break;
-                case "AE": personage = new Archer(name, level, x, y);
-                    enemyTeam.add(personage);
-                    break; //Уместен ли break? и вообще красиво или фигня?
+
+            Personage personage;
+            switch (marker.charAt(0)) {
+                case 'S' -> personage = new Swordsman(name, level, x, y);
+                case 'A' -> personage = new Archer(name, level, x, y);
+                default -> personage = null;
             }
+
+            List<Personage> team;
+            switch (marker.charAt(1)) {
+                case 'A' -> team = myTeam;
+                case 'E' -> team = enemyTeam;
+                default -> team = null;
+            }
+
+            team.add(personage);
         }
         Game game = new Game(myTeam, enemyTeam);
-        System.out.println(myTeam.toString());
-        System.out.println(enemyTeam.toString());
+        System.out.println(myTeam);
+        System.out.println(enemyTeam);
         System.out.println(game.getAttackedEnemies());
     }
 

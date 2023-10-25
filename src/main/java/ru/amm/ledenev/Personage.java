@@ -1,8 +1,10 @@
 package ru.amm.ledenev;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
+
+import static java.lang.Math.pow;
+import static java.lang.Math.sqrt;
 
 public abstract class Personage {
     private String name;
@@ -35,6 +37,10 @@ public abstract class Personage {
 
     public abstract List<Personage> chooseEnemiesToFight(List<Personage> enemies);
 
+    public double rangeTo(Personage personage){
+        return sqrt(pow(personage.getX() - getX(), 2) + pow(personage.getY() - getY(), 2));
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -48,6 +54,7 @@ public abstract class Personage {
         return Objects.hash(name, level, x, y);
     }
 
+    @Override
     public String toString(){
         return name + " " + level + " " + x + " " + y;
     }
