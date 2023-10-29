@@ -1,17 +1,20 @@
-package ru.amm.ledenev;
+package ru.amm.ledenev.game;
 
 
+import ru.amm.ledenev.model.Personage;
+
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class Game {
+public class FightGame {
     private final List<Personage> myTeam;
     private final List<Personage> enemyTeam;
 
-    public Game(List<Personage> myTeam, List<Personage> enemyTeam) {
-        this.myTeam = myTeam;
-        this.enemyTeam = enemyTeam;
+    public FightGame(){
+        this.myTeam = new ArrayList<>();
+        this.enemyTeam = new ArrayList<>();
     }
 
     public Set<Personage> getAttackedEnemies(){
@@ -20,5 +23,13 @@ public class Game {
             attackedEnemies.addAll(teammate.chooseEnemiesToFight(enemyTeam));
         }
         return attackedEnemies;
+    }
+
+    public void addPersonageToMyTeam(Personage personage){
+        myTeam.add(personage);
+    }
+
+    public void addPersonageToEnemyTeam(Personage personage){
+        enemyTeam.add(personage);
     }
 }

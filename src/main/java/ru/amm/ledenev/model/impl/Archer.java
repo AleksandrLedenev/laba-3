@@ -1,4 +1,6 @@
-package ru.amm.ledenev;
+package ru.amm.ledenev.model.impl;
+
+import ru.amm.ledenev.model.Personage;
 
 import java.util.List;
 

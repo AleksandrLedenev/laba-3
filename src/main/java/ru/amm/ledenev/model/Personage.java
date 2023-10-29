@@ -1,4 +1,4 @@
-package ru.amm.ledenev;
+package ru.amm.ledenev.model;
 
 import java.util.List;
 import java.util.Objects;
