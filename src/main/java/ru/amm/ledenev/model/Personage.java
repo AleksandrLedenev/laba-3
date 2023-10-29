@@ -19,6 +19,10 @@ public abstract class Personage implements Comparable<Personage> {
         this.y = y;
     }
 
+    public String getName() {
+        return name;
+    }
+
     public abstract List<Personage> chooseEnemiesToFight(List<Personage> enemies);
 
     public double rangeTo(Personage personage){

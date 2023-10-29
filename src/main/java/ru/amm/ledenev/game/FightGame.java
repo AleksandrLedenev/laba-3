@@ -3,10 +3,7 @@ package ru.amm.ledenev.game;
 
 import ru.amm.ledenev.model.Personage;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class FightGame {
     private final List<Personage> myTeam;
@@ -15,6 +12,14 @@ public class FightGame {
     public FightGame(){
         this.myTeam = new ArrayList<>();
         this.enemyTeam = new ArrayList<>();
+    }
+
+    public List<Personage> getMyTeam() {
+        return myTeam;
+    }
+
+    public List<Personage> getEnemyTeam() {
+        return enemyTeam;
     }
 
     public Set<Personage> getAttackedEnemies(){
@@ -32,4 +37,5 @@ public class FightGame {
     public void addPersonageToEnemyTeam(Personage personage){
         enemyTeam.add(personage);
     }
+
 }

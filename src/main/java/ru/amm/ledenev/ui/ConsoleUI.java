@@ -1,11 +1,10 @@
 package ru.amm.ledenev.ui;
 
-import ru.amm.ledenev.dto.request.GetAttackedRequest;
-import ru.amm.ledenev.dto.request.NewGameRequest;
-import ru.amm.ledenev.dto.request.ReadPersonagesFromFileRequest;
+import ru.amm.ledenev.dto.request.*;
 import ru.amm.ledenev.dto.response.ErrorResponse;
 import ru.amm.ledenev.dto.response.OkResponse;
 import ru.amm.ledenev.dto.response.PersonagesResponse;
+import ru.amm.ledenev.dto.response.TwoTeamResponse;
 import ru.amm.ledenev.service.RequestProcessor;
 
 import java.util.Scanner;
@@ -22,6 +21,8 @@ public class ConsoleUI implements AutoCloseable {
     }
 
     public void start(){
+        System.out.println("Добро пожаловать! Для запуска игры введите newgame");
+        System.out.println("Все команды можно узнать командой info");
         while (true){
             if (consoleInput.hasNext()){
                 String command = consoleInput.next();
@@ -57,7 +58,45 @@ public class ConsoleUI implements AutoCloseable {
                         } else {
                             System.out.println("Ошибка получения персонажей");
                         }
-
+                    }
+                    case "printpersonages" -> {
+                        var request = new PrintPersonagesRequest();
+                        var response = rp.process(request);
+                        if (response instanceof TwoTeamResponse){
+                            System.out.println("Твоя команда: " + ((TwoTeamResponse) response).myTeam());
+                            System.out.println("Вражеская команда: " + ((TwoTeamResponse) response).enemyTeam());
+                        }
+                        if (response instanceof ErrorResponse){
+                            System.out.println("Произогла ошибка: " + ((ErrorResponse) response).message());
+                        }
+                    }
+                    case "info" -> {
+                        var request = new InfoRequest();
+                        var response = rp.process(request);
+                        if (response instanceof OkResponse){
+                            System.out.println("newgame - создать новую игру");
+                            System.out.println("loadfile - загрузить персонажей из файла");
+                            System.out.println("getattacked - узнать кого можно атаковать");
+                            System.out.println("printpersonages - вывести составы команд");
+                            System.out.println("addpersonage - добавить персонажа");
+                            System.out.println("exit - закрыть игру");
+                        }
+                    }
+                    case "addpersonage" -> {
+                        Scanner sc = new Scanner(System.in);
+                        System.out.println("Введите данные о персонаже: ");
+                        System.out.println("SA *Имя* *Уровень* *Координата Х* *Координата Y*");
+                        System.out.println("Первая буква - лучник/мечник (S - лучник, A - мечник)");
+                        System.out.println("Вторая буква - союзнник/соперник (A - союзник, E - соперник)");
+                        String personageInfo = sc.nextLine();
+                        var request = new AddPersonageRequest(personageInfo);
+                        var response = rp.process(request);
+                        if (response instanceof OkResponse){
+                            System.out.println("Персонаж успешно добавлен!");
+                        }
+                        if (response instanceof ErrorResponse){
+                            System.out.println("Произошла ошибка: " + ((ErrorResponse) response).message());
+                        }
                     }
                     case "exit" -> {
                         System.out.println("До свидания!");
@@ -69,17 +108,9 @@ public class ConsoleUI implements AutoCloseable {
         }
     }
 
+
     @Override
     public void close() throws Exception {
         consoleInput.close();
     }
-    //newgame
-    //loadpers из file
-    //добавить перса
-    //удалить перса
-    //поиск
-    //вывести кого можно атаковать
-    //exit
-    //info (список доступных команд)
-    //получение всех игроков
 }
