@@ -38,4 +38,31 @@ public class FightGame {
         enemyTeam.add(personage);
     }
 
+    public List<Personage> deletePersonageToMyTeam(String name){
+        List<Personage> deletePersonage = new ArrayList<>();
+        for (Personage teammate : myTeam) {
+            String tempName = teammate.getName();
+            if (Objects.equals(tempName, name)){
+                deletePersonage.add(teammate);
+            }
+        }
+        for (Personage deleteTeammate : deletePersonage) {
+            myTeam.remove(deleteTeammate);
+        }
+        return deletePersonage;
+    }
+
+    public List<Personage> deletePersonageToEnemyTeam(String name){
+        List<Personage> deletePersonage = new ArrayList<>();
+        for (Personage teammate : enemyTeam) {
+            String tempName = teammate.getName();
+            if (Objects.equals(tempName, name)){
+                deletePersonage.add(teammate);
+            }
+        }
+        for (Personage deleteTeammate : deletePersonage) {
+            enemyTeam.remove(deleteTeammate);
+        }
+        return deletePersonage;
+    }
 }

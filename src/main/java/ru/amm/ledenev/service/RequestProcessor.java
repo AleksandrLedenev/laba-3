@@ -9,6 +9,8 @@ import ru.amm.ledenev.model.impl.Swordsman;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.Scanner;
 
@@ -49,9 +51,6 @@ public class RequestProcessor {
                 var enemyTeam = game.getEnemyTeam();
                 return new TwoTeamResponse(myTeam, enemyTeam);
             }
-            case InfoRequest r -> {
-                return new OkResponse();
-            }
             case AddPersonageRequest r -> {
                 if (game == null){
                     return new ErrorResponse("Игра не инициализирована");
@@ -62,6 +61,18 @@ public class RequestProcessor {
                     return new ErrorResponse(ex.getMessage());
                 }
                 return new OkResponse();
+            }
+            case DeletePersonageRequest r -> {
+                if (game == null){
+                    return new ErrorResponse("Игра не инициализирована");
+                }
+                List<Personage> deletePersonage = new ArrayList<>();
+                deletePersonage.addAll(game.deletePersonageToMyTeam(r.name()));
+                deletePersonage.addAll(game.deletePersonageToEnemyTeam(r.name()));
+                if (deletePersonage.size() == 0){
+                    return new ErrorResponse("Такого игрока не найдено");
+                }
+                return new DeleteResponse(deletePersonage);
             }
         }
     }

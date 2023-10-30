@@ -1,10 +1,7 @@
 package ru.amm.ledenev.ui;
 
 import ru.amm.ledenev.dto.request.*;
-import ru.amm.ledenev.dto.response.ErrorResponse;
-import ru.amm.ledenev.dto.response.OkResponse;
-import ru.amm.ledenev.dto.response.PersonagesResponse;
-import ru.amm.ledenev.dto.response.TwoTeamResponse;
+import ru.amm.ledenev.dto.response.*;
 import ru.amm.ledenev.service.RequestProcessor;
 
 import java.util.Scanner;
@@ -67,20 +64,17 @@ public class ConsoleUI implements AutoCloseable {
                             System.out.println("Вражеская команда: " + ((TwoTeamResponse) response).enemyTeam());
                         }
                         if (response instanceof ErrorResponse){
-                            System.out.println("Произогла ошибка: " + ((ErrorResponse) response).message());
+                            System.out.println("Произошла ошибка: " + ((ErrorResponse) response).message());
                         }
                     }
                     case "info" -> {
-                        var request = new InfoRequest();
-                        var response = rp.process(request);
-                        if (response instanceof OkResponse){
-                            System.out.println("newgame - создать новую игру");
-                            System.out.println("loadfile - загрузить персонажей из файла");
-                            System.out.println("getattacked - узнать кого можно атаковать");
-                            System.out.println("printpersonages - вывести составы команд");
-                            System.out.println("addpersonage - добавить персонажа");
-                            System.out.println("exit - закрыть игру");
-                        }
+                        System.out.println("newgame - создать новую игру");
+                        System.out.println("loadfile - загрузить персонажей из файла");
+                        System.out.println("getattacked - узнать кого можно атаковать");
+                        System.out.println("printpersonages - вывести составы команд");
+                        System.out.println("addpersonage - добавить персонажа");
+                        System.out.println("deletepersonage - удалить персонажей");
+                        System.out.println("exit - закрыть игру");
                     }
                     case "addpersonage" -> {
                         Scanner sc = new Scanner(System.in);
@@ -93,6 +87,18 @@ public class ConsoleUI implements AutoCloseable {
                         var response = rp.process(request);
                         if (response instanceof OkResponse){
                             System.out.println("Персонаж успешно добавлен!");
+                        }
+                        if (response instanceof ErrorResponse){
+                            System.out.println("Произошла ошибка: " + ((ErrorResponse) response).message());
+                        }
+                    }
+                    case "deletepersonage" -> {
+                        System.out.println("Введите имя персонажа:");
+                        String name = consoleInput.next();
+                        var request = new DeletePersonageRequest(name);
+                        var response = rp.process(request);
+                        if (response instanceof DeleteResponse){
+                            System.out.println("Персонажи удалены" + ((DeleteResponse) response).deletePersonages());
                         }
                         if (response instanceof ErrorResponse){
                             System.out.println("Произошла ошибка: " + ((ErrorResponse) response).message());
