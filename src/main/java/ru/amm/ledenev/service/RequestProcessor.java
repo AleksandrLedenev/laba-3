@@ -11,7 +11,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Scanner;
 
 public class RequestProcessor {
@@ -66,13 +65,14 @@ public class RequestProcessor {
                 if (game == null){
                     return new ErrorResponse("Игра не инициализирована");
                 }
-                List<Personage> deletePersonage = new ArrayList<>();
-                deletePersonage.addAll(game.deletePersonageToMyTeam(r.name()));
-                deletePersonage.addAll(game.deletePersonageToEnemyTeam(r.name()));
-                if (deletePersonage.size() == 0){
+                List<Personage> deletedPersonages = new ArrayList<>();
+                String name = r.name();
+                deletedPersonages.addAll(game.deletePersonageFromMyTeam(name));
+                deletedPersonages.addAll(game.deletePersonageFromEnemyTeam(name));
+                if (deletedPersonages.size() == 0){
                     return new ErrorResponse("Такого игрока не найдено");
                 }
-                return new DeleteResponse(deletePersonage);
+                return new PersonagesResponse(deletedPersonages);
             }
         }
     }
@@ -86,7 +86,7 @@ public class RequestProcessor {
     }
 
     private void readPersonage(String personageInfo){
-        String[] subStr = personageInfo.split("\\ ");
+        String[] subStr = personageInfo.split(" ");
         String marker = subStr[0];
         String name = subStr[1];
         int level = Integer.parseInt(subStr[2]);

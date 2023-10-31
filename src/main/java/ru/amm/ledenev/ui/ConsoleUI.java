@@ -97,8 +97,8 @@ public class ConsoleUI implements AutoCloseable {
                         String name = consoleInput.next();
                         var request = new DeletePersonageRequest(name);
                         var response = rp.process(request);
-                        if (response instanceof DeleteResponse){
-                            System.out.println("Персонажи удалены" + ((DeleteResponse) response).deletePersonages());
+                        if (response instanceof PersonagesResponse){
+                            System.out.println("Персонажи удалены: " + ((PersonagesResponse) response).personages());
                         }
                         if (response instanceof ErrorResponse){
                             System.out.println("Произошла ошибка: " + ((ErrorResponse) response).message());

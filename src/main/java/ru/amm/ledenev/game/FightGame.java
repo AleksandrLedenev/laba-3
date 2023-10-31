@@ -38,30 +38,30 @@ public class FightGame {
         enemyTeam.add(personage);
     }
 
-    public List<Personage> deletePersonageToMyTeam(String name){
-        List<Personage> deletePersonage = new ArrayList<>();
-        for (Personage teammate : myTeam) {
-            String tempName = teammate.getName();
-            if (Objects.equals(tempName, name)){
-                deletePersonage.add(teammate);
+    private List<Personage> searchPersonageByName(String name, Collection<Personage> team){
+        List<Personage> searchedPersonage = new ArrayList<>();
+        for (Personage teammate : team) {
+            String teammateName= teammate.getName();
+            if (teammateName.equals(name)) {
+                searchedPersonage.add(teammate);
             }
         }
+        return searchedPersonage;
+    }
+
+
+    public List<Personage> deletePersonageFromMyTeam(String name){
+        List<Personage> deletePersonage = searchPersonageByName(name, myTeam);
         for (Personage deleteTeammate : deletePersonage) {
             myTeam.remove(deleteTeammate);
         }
         return deletePersonage;
     }
 
-    public List<Personage> deletePersonageToEnemyTeam(String name){
-        List<Personage> deletePersonage = new ArrayList<>();
-        for (Personage teammate : enemyTeam) {
-            String tempName = teammate.getName();
-            if (Objects.equals(tempName, name)){
-                deletePersonage.add(teammate);
-            }
-        }
+    public List<Personage> deletePersonageFromEnemyTeam(String name){
+        List<Personage> deletePersonage = searchPersonageByName(name, enemyTeam);
         for (Personage deleteTeammate : deletePersonage) {
-            enemyTeam.remove(deleteTeammate);
+            myTeam.remove(deleteTeammate);
         }
         return deletePersonage;
     }
