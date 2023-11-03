@@ -48,6 +48,9 @@ public class RequestProcessor {
                 }
                 var myTeam = game.getMyTeam();
                 var enemyTeam = game.getEnemyTeam();
+                if (myTeam.isEmpty() && enemyTeam.isEmpty()){
+                    return new NotFoundResponse();
+                }
                 return new TwoTeamResponse(myTeam, enemyTeam);
             }
             case AddPersonageRequest r -> {
@@ -69,8 +72,8 @@ public class RequestProcessor {
                 String name = r.name();
                 deletedPersonages.addAll(game.deletePersonageFromMyTeam(name));
                 deletedPersonages.addAll(game.deletePersonageFromEnemyTeam(name));
-                if (deletedPersonages.size() == 0){
-                    return new ErrorResponse("Такого игрока не найдено");
+                if (deletedPersonages.isEmpty()){
+                    return new NotFoundResponse();
                 }
                 return new PersonagesResponse(deletedPersonages);
             }

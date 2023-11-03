@@ -60,11 +60,10 @@ public class ConsoleUI implements AutoCloseable {
                         var request = new PrintPersonagesRequest();
                         var response = rp.process(request);
                         if (response instanceof TwoTeamResponse){
-                            System.out.println("Твоя команда: " + ((TwoTeamResponse) response).myTeam());
-                            System.out.println("Вражеская команда: " + ((TwoTeamResponse) response).enemyTeam());
+                            printPersonages((TwoTeamResponse) response);
                         }
-                        if (response instanceof ErrorResponse){
-                            System.out.println("Произошла ошибка: " + ((ErrorResponse) response).message());
+                        if (response instanceof NotFoundResponse){
+                            System.out.println("Список персонажей пуст");
                         }
                     }
                     case "info" -> {
@@ -93,12 +92,25 @@ public class ConsoleUI implements AutoCloseable {
                         }
                     }
                     case "deletepersonage" -> {
+                        var printRequest = new PrintPersonagesRequest();
+                        var printResponse = rp.process(printRequest);
+                        if (printResponse instanceof TwoTeamResponse){
+                            printPersonages((TwoTeamResponse) printResponse);
+                        }
+                        if (printResponse instanceof NotFoundResponse){
+                            System.out.println("Список персонажей пуст");
+                            continue;
+                        }
+
                         System.out.println("Введите имя персонажа:");
                         String name = consoleInput.next();
                         var request = new DeletePersonageRequest(name);
                         var response = rp.process(request);
                         if (response instanceof PersonagesResponse){
                             System.out.println("Персонажи удалены: " + ((PersonagesResponse) response).personages());
+                        }
+                        if (response instanceof NotFoundResponse){
+                            System.out.println("Таких персонажей не найдено");
                         }
                         if (response instanceof ErrorResponse){
                             System.out.println("Произошла ошибка: " + ((ErrorResponse) response).message());
@@ -112,6 +124,11 @@ public class ConsoleUI implements AutoCloseable {
                 }
             }
         }
+    }
+
+    private void printPersonages(TwoTeamResponse response){
+        System.out.println("Твоя команда: " + response.myTeam());
+        System.out.println("Вражеская команда: " + response.enemyTeam());
     }
 
 
