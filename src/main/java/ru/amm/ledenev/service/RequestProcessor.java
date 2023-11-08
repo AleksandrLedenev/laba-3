@@ -1,5 +1,9 @@
 package ru.amm.ledenev.service;
 
+import com.fasterxml.jackson.core.exc.StreamWriteException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.DatabindException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import ru.amm.ledenev.dto.request.*;
 import ru.amm.ledenev.dto.response.*;
 import ru.amm.ledenev.game.FightGame;
@@ -9,13 +13,14 @@ import ru.amm.ledenev.model.impl.Swordsman;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 public class RequestProcessor {
 
-    private FightGame game;
+    public FightGame game;
     public Response process(Request request){
         switch (request){
             case NewGameRequest r -> {
@@ -42,7 +47,7 @@ public class RequestProcessor {
                 var personages = game.getAttackedEnemies();
                 return new PersonagesResponse(personages);
             }
-            case PrintPersonagesRequest r -> {
+            case GetPersonagesRequest r -> {
                 if (game == null){
                     return new ErrorResponse("Игра не инициализирована");
                 }
@@ -76,6 +81,35 @@ public class RequestProcessor {
                     return new NotFoundResponse();
                 }
                 return new PersonagesResponse(deletedPersonages);
+            }
+            case SaveGameRequest r -> {
+                if (game == null){
+                    return new ErrorResponse("Игра не инициализирована");
+                }
+                try{
+                    String path = "src/save/" + r.fileName() + ".json";
+                    ObjectMapper mapper = new ObjectMapper();
+                    mapper.writeValue(new File(path), game);
+                } catch (IllegalArgumentException ex){
+                    return new ErrorResponse(ex.getMessage());
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+                return new OkResponse();
+            }
+            case LoadGameRequest r -> {
+                try{
+                    String path = "src/save/" + r.fileName() + ".json";
+                    ObjectMapper mapper = new ObjectMapper();
+                    game = mapper.readValue(new File(path), new TypeReference<>(){});
+                } catch (FileNotFoundException ex){
+                    return new ErrorResponse("Не найден файл");
+                } catch (IllegalArgumentException ex){
+                    return new ErrorResponse(ex.getMessage());
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+                return new OkResponse();
             }
         }
     }

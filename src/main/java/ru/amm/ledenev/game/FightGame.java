@@ -41,7 +41,7 @@ public class FightGame {
     private List<Personage> searchPersonageByName(String name, Collection<Personage> team){
         List<Personage> searchedPersonage = new ArrayList<>();
         for (Personage teammate : team) {
-            String teammateName= teammate.getName();
+            String teammateName = teammate.getName();
             if (teammateName.equals(name)) {
                 searchedPersonage.add(teammate);
             }

@@ -23,6 +23,18 @@ public abstract class Personage implements Comparable<Personage> {
         return name;
     }
 
+    public int getLevel() {
+        return level;
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
     public abstract List<Personage> chooseEnemiesToFight(List<Personage> enemies);
 
     public double rangeTo(Personage personage){

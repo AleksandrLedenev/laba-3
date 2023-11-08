@@ -57,7 +57,7 @@ public class ConsoleUI implements AutoCloseable {
                         }
                     }
                     case "printpersonages" -> {
-                        var request = new PrintPersonagesRequest();
+                        var request = new GetPersonagesRequest();
                         var response = rp.process(request);
                         if (response instanceof TwoTeamResponse){
                             printPersonages((TwoTeamResponse) response);
@@ -92,7 +92,7 @@ public class ConsoleUI implements AutoCloseable {
                         }
                     }
                     case "deletepersonage" -> {
-                        var printRequest = new PrintPersonagesRequest();
+                        var printRequest = new GetPersonagesRequest();
                         var printResponse = rp.process(printRequest);
                         if (printResponse instanceof TwoTeamResponse){
                             printPersonages((TwoTeamResponse) printResponse);
@@ -113,6 +113,30 @@ public class ConsoleUI implements AutoCloseable {
                             System.out.println("Таких персонажей не найдено");
                         }
                         if (response instanceof ErrorResponse){
+                            System.out.println("Произошла ошибка: " + ((ErrorResponse) response).message());
+                        }
+                    }
+                    case "savegame" -> {
+                        System.out.println("Введите название файла");
+                        String fileName = consoleInput.next();
+                        var request = new SaveGameRequest(fileName);
+                        var response = rp.process(request);
+                        if (response instanceof OkResponse) {
+                            System.out.println("Файл сохранен");
+                        }
+                        if (response instanceof ErrorResponse) {
+                            System.out.println("Произошла ошибка: " + ((ErrorResponse) response).message());
+                        }
+                    }
+                    case "loadgame" -> {
+                        System.out.println("Введите название файла");
+                        String fileName = consoleInput.next();
+                        var request = new LoadGameRequest(fileName);
+                        var response = rp.process(request);
+                        if (response instanceof OkResponse) {
+                            System.out.println("Игра загружена");
+                        }
+                        if (response instanceof ErrorResponse) {
                             System.out.println("Произошла ошибка: " + ((ErrorResponse) response).message());
                         }
                     }
